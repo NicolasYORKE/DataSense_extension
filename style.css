@@ -49,3 +49,43 @@ body {
 .nav-tab.active ~ #cursor {
   transform: translateX(calc(var(--index) * 100%));
 }
+
+/* style.css */
+
+/* ... (le reste de votre CSS) */
+
+#tab3 {
+  text-align: center;
+}
+
+#chatContainer {
+  list-style-type: none;
+  padding: 0;
+}
+
+.user-message {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  align-self: flex-end;
+}
+
+.chatbot-message {
+  background-color: #4caf50;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  align-self: flex-start;
+}
+
+#userInput {
+  width: 60%;
+  padding: 8px;
+  margin-top: 10px;
+}
+
+/* ... (le reste de votre CSS) */

@@ -1,4 +1,64 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Onglet 3 - Chatbot
+    var chatContainer = document.getElementById('chatContainer');
+    var userInput = document.getElementById('userInput');
+    var sendButton = document.getElementById('sendButton');
+
+    sendButton.addEventListener('click', function() {
+        sendMessage();
+    });
+
+    function sendMessage() {
+        var userMessage = userInput.value;
+        appendMessage('user', userMessage);
+
+        // Remplacez 'YOUR_OPENAI_API_KEY' par votre clé d'API OpenAI
+        var openaiApiKey = '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';
+
+        console.log('Avant la requête à l\'API');
+
+        fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openaiApiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-3.5-turbo',  // Ajoutez cette ligne avec le modèle souhaité
+                messages: [
+                    { role: 'system', content: 'You are a helpful assistant.' },
+                    { role: 'user', content: userMessage }
+                ]
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Réponse de l\'API:', data);
+
+            var chatbotReply = data.choices[0].message.content;
+            appendMessage('chatbot', chatbotReply);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête à l\'API:', error);
+        });
+
+        console.log('Après la requête à l\'API');
+    }
+
+    function appendMessage(role, content) {
+        var messageElement = document.createElement('li');
+        messageElement.classList.add(role === 'user' ? 'user-message' : 'chatbot-message');
+        messageElement.textContent = content;
+        chatContainer.appendChild(messageElement);
+
+        // Effacer le champ de saisie après l'envoi du message
+        if (role === 'user') {
+            userInput.value = '';
+        }
+    }
+
+
     var tabLinks = document.querySelectorAll('.nav-tab');
     var cursor = document.getElementById('cursor');
 
@@ -49,95 +109,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Function to display cookies
     function displayCookies(cookies) {
         var cookieListContainer = document.getElementById('cookieList');
         if (!cookieListContainer) {
             console.error("Cookie list container not found.");
             return;
         }
-    
+
         // Clear existing content
         cookieListContainer.innerHTML = "";
-    
+
         if (cookies.length === 0) {
             cookieListContainer.innerHTML = "<p>No cookies found.</p>";
             return;
         }
-    
-        // Create a div for each cookie with 10px margin
+
+        // Loop through cookies and create div for each cookie
         cookies.forEach(function(cookie) {
+            // Create cookie div
             var cookieDiv = document.createElement('div');
-            cookieDiv.style.marginBottom = '10px'; // 10px margin between cookies
-            cookieDiv.style.backgroundColor = '#eee'; // Light gray background
-            cookieDiv.style.padding = '10px'; // 10px padding for each cookie
-            cookieDiv.style.position = 'relative'; // Make it a positioned element
-            cookieDiv.style.cursor = 'pointer'; // Change cursor to pointer
-            cookieDiv.style.width = '400px'; // Set width to 100%
-            cookieDiv.style.borderRadius = '5px'; // Add border radius
-            cookieDiv.style.border = '1px solid #c9286b'; // Add border
-    
-            // Create and append elements for each cookie property
-            var nameElement = document.createElement('p');
-            nameElement.textContent = cookie.name;
-            nameElement.style.fontWeight = 'bold'; // Set the name to bold
-    
-            var domainElement = document.createElement('p');
-            domainElement.textContent = cookie.domain;
-            domainElement.style.position = 'absolute'; // Position the domain in the top right corner
-            domainElement.style.top = '5px'; // Adjust top position
-            domainElement.style.right = '5px'; // Adjust right position
-            domainElement.style.fontSize = '10px'; // Set the font size to make it smaller
-    
-            var valueElement = document.createElement('p');
-            valueElement.textContent = "Value: " + cookie.value;
-            valueElement.style.maxHeight = '0'; // Initially hide the value
-            valueElement.style.overflow = 'hidden'; // Hide overflow content
-            valueElement.style.transition = 'max-height 0.3s ease-in-out'; // Add transition
-    
-            var detailsContainer = document.createElement('div');
-            detailsContainer.style.maxHeight = '0'; // Initially hide details
-            detailsContainer.style.overflow = 'hidden'; // Hide overflow content
-            detailsContainer.style.transition = 'max-height 0.3s ease-in-out'; // Add transition
-            detailsContainer.style.marginTop = '10px'; // Add margin below the value
-    
-            // Create and append elements for additional cookie details
-            var expiresElement = document.createElement('p');
-            expiresElement.textContent = "Expires: " + cookie.expires;
-    
-            var pathElement = document.createElement('p');
-            pathElement.textContent = "Path: " + cookie.path;
-    
-            var secureElement = document.createElement('p');
-            secureElement.textContent = "Secure: " + cookie.secure;
-    
-            var httpOnlyElement = document.createElement('p');
-            httpOnlyElement.textContent = "HttpOnly: " + cookie.httpOnly;
-    
-            // Add click event to toggle visibility of the value and details
-            valueElement.addEventListener('click', function() {
-                if (valueElement.style.maxHeight === '0px') {
-                    valueElement.style.maxHeight = valueElement.scrollHeight + 'px'; // Expand
-                    detailsContainer.style.maxHeight = detailsContainer.scrollHeight + 'px'; // Expand details
-                } else {
-                    valueElement.style.maxHeight = '0'; // Collapse
-                    detailsContainer.style.maxHeight = '0'; // Collapse details
-                }
+            cookieDiv.style.marginBottom = '10px';
+            cookieDiv.style.backgroundColor = '#eee';
+            cookieDiv.style.padding = '10px';
+            cookieDiv.style.position = 'relative';
+            cookieDiv.style.cursor = 'pointer';
+            cookieDiv.style.width = '400px';
+            cookieDiv.style.borderRadius = '5px';
+            cookieDiv.style.border = '1px solid #c9286b';
+
+            // Create delete icon
+            var deleteIcon = document.createElement('img');
+            deleteIcon.src = 'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M2 3a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2V4H2V3zm2 0V2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H4zm9 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm-1 1H4v7h9V6z"/></svg>';
+            deleteIcon.style.position = 'absolute';
+            deleteIcon.style.top = '20px'; // Adjust top position
+            deleteIcon.style.right = '5px'; // Adjust right position
+            deleteIcon.style.cursor = 'pointer';
+            deleteIcon.style.transition = 'transform 0.3s ease-in-out';
+
+            // Add click event to delete the cookie
+            deleteIcon.addEventListener('click', function() {
+                deleteCookie(cookie.name, cookie.domain);
+                // Remove the corresponding div from the DOM
+                cookieDiv.remove();
             });
-    
-            // Append elements to the details container
-            detailsContainer.appendChild(expiresElement);
-            detailsContainer.appendChild(pathElement);
-            detailsContainer.appendChild(secureElement);
-            detailsContainer.appendChild(httpOnlyElement);
-    
+
+            // Create arrow icon
             var arrowIcon = document.createElement('img');
             arrowIcon.src = 'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"/></svg>';
             arrowIcon.style.position = 'absolute';
             arrowIcon.style.bottom = '5px'; // Adjust bottom position
             arrowIcon.style.right = '5px'; // Adjust right position
-            arrowIcon.style.cursor = 'pointer'; // Change cursor to pointer
-            arrowIcon.style.transition = 'transform 0.3s ease-in-out'; // Add transition for rotation
-    
+            arrowIcon.style.cursor = 'pointer';
+            arrowIcon.style.transition = 'transform 0.3s ease-in-out';
+
             // Add click event to toggle visibility of the value, details, and rotate arrow icon
             arrowIcon.addEventListener('click', function() {
                 if (valueElement.style.maxHeight === '0px') {
@@ -150,19 +175,63 @@ document.addEventListener('DOMContentLoaded', function() {
                     arrowIcon.style.transform = 'rotate(0deg)'; // Reset rotation
                 }
             });
-    
+
+            // Create and append elements for each cookie property
+            var nameElement = document.createElement('p');
+            nameElement.textContent = cookie.name;
+            nameElement.style.fontWeight = 'bold';
+
+            var domainElement = document.createElement('p');
+            domainElement.textContent = cookie.domain;
+            domainElement.style.position = 'absolute';
+            domainElement.style.top = '5px';
+            domainElement.style.right = '5px';
+            domainElement.style.fontSize = '10px';
+
+            var valueElement = document.createElement('p');
+            valueElement.textContent = "Value: " + cookie.value;
+            valueElement.style.maxHeight = '0';
+            valueElement.style.overflow = 'hidden';
+            valueElement.style.transition = 'max-height 0.3s ease-in-out';
+
+            var detailsContainer = document.createElement('div');
+            detailsContainer.style.maxHeight = '0';
+            detailsContainer.style.overflow = 'hidden';
+            detailsContainer.style.transition = 'max-height 0.3s ease-in-out';
+            detailsContainer.style.marginTop = '10px';
+
+            // ... (Existing code for other elements)
+
             // Append elements to the cookie div
+            cookieDiv.appendChild(deleteIcon);
             cookieDiv.appendChild(nameElement);
             cookieDiv.appendChild(domainElement);
             cookieDiv.appendChild(valueElement);
             cookieDiv.appendChild(detailsContainer);
             cookieDiv.appendChild(arrowIcon);
-    
+
             // Append the cookie div to the container
             cookieListContainer.appendChild(cookieDiv);
         });
     }
-    
+
+
+    // Function to delete cookie
+    function deleteCookie(cookieName) {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            var currentTab = tabs[0];
+            var tabUrl = currentTab.url;
+
+            chrome.cookies.remove({
+                name: cookieName,
+                url: tabUrl
+            }, function(deletedCookie) {
+                console.log("Deleted cookie:", deletedCookie);
+            });
+        });
+    }
+
+
 
     // Automatically show Tab 1 on extension load
     showTab('tab1');
