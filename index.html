@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ma Extension Chrome</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tab {
+            display: none;
+        }
+        
+    </style>
+</head>
+<body style="background-color: lightgray;">
+    
+    <!-- ... Votre contenu HTML ... -->
+    <div id="cursor" class="nav-tab"></div>
+    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; width: 400px;">
+        <img src="assets/Logo_DataSense.png" alt="cookie" style="margin-right: 10px;">
+        <ul class="nav nav-pills" style="max-width: 400px;">
+            <li class="nav-item">
+                <a class="nav-link active nav-tab" href="#" data-tab="tab1">DataSense</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-tab" href="#" data-tab="tab2">Cookie Review</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-tab" href="#" data-tab="tab3">Chatbot</a>
+            </li>
+        </ul>
+    </div>
+    
+
+
+    <div id="tab1" class="tab" style="height: 450px; padding: 25px; border-radius: 5%; background-color: white;">
+        <img src="assets/DataSense.png" alt="cookie" style="height: 150px; display: block; margin-left: auto; margin-right: auto; width: 60%; margin-top: 70px;">
+        <a href="https://www.cnil.fr/fr/cnil-direct/question/la-cnil-cest-quoi" target="_blank"><button class="purple-button" >Our website</button></a>
+    </div>
+
+    <div id="tab2" class="tab">
+        <div id="cookieList"></div>
+    </div>
+
+    <div id="tab3" class="tab">
+        <h1>Onglet 3</h1>
+        <p>Texte pour l'onglet 3.</p>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+</body>

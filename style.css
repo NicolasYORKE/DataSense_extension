@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+  }
+  
+  .tabs {
+    margin-bottom: 10px;
+  }
+  
+  .tab-button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .tab-content {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+
+  .purple-button {
+    background-color: #c9286b;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: block;
+    margin: 80px auto;
+    cursor: pointer;
+}
+
+#cursor {
+  height: 2px;
+  background-color: #c9286b; /* Choisissez votre couleur de curseur ici */
+  position: absolute;
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav-tab {
+  position: relative;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-tab.active {
+  color: #c9286b; /* Choisissez votre couleur de texte active ici */
+}
+
+.nav-tab.active ~ #cursor {
+  transform: translateX(calc(var(--index) * 100%));
+}
