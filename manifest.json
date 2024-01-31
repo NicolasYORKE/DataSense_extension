@@ -1,15 +1,20 @@
 {
-    "name": "Covid-19 Stats UK",
+    "name": "DataSense",
     "version": "1.0.0",
-    "description": "latest covid data of UK",
+    "description": "Manage your cookies !",
     "manifest_version": 3,
-    "author": "Sampurna Chapagain",
+    "author": "DataSense Team",
     "action":{
         "default_popup": "index.html",
-        "default_title": "Latest Covid Report"
+        "default_title": "Manage your cookies !"
     },
     "permissions": [
-        "cookies"
+        "cookies",
+        "notifications",
+        "webNavigation"
       ],
-    "host_permissions": ["<all_urls>"]
+    "host_permissions": ["<all_urls>"],
+    "background": {
+        "service_worker": "background.js"
+    }
 }
