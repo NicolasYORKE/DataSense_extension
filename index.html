@@ -7,8 +7,7 @@
     <style>
         .tab {
             display: none;
-        }
-        
+        }  
     </style>
 </head>
 <body style="background-color: lightgray;">
@@ -38,8 +37,13 @@
     </div>
 
     <div id="tab2" class="tab">
-        <div id="cookieList"></div>
+        <div id="cookiesContainer">
+            <div id="cookieList"></div>
+        </div>
+        <button id="deleteAllCookiesButton" class="delete-button" >Supprimer tous les cookies</button>
     </div>
+    
+    
 
     <div id="tab3" class="tab">
         <h1>Chatbot</h1>
@@ -51,6 +55,7 @@
 
 
     <script src="script.js"></script>
+    <script src="config.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
 </body>
