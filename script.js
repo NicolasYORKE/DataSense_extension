@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var sendButton = document.getElementById('sendButton');
 
     sendButton.addEventListener('click', function() {
-        sendMessage();
+        sendGPTMessage();
     });
 
-    function sendMessage() {
+    function sendGPTMessage() {
         var userMessage = userInput.value;
         appendMessage('user', userMessage);
 
         // Remplacez 'YOUR_OPENAI_API_KEY' par votre clé d'API OpenAI
-        var openaiApiKey = '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';
+        //const openaiApiKey = require('config.js');
 
         console.log('Avant la requête à l\'API');
 
@@ -94,20 +94,55 @@ document.addEventListener('DOMContentLoaded', function() {
         // Fetch and display cookies when Tab 2 is opened
         if (tabId === 'tab2') {
             fetchAndDisplayCookies();
+    
+            // Ajoutez un gestionnaire d'événements au bouton pour supprimer tous les cookies
+            var deleteAllCookiesButton = document.getElementById('deleteAllCookiesButton');
+            if (deleteAllCookiesButton) {
+                deleteAllCookiesButton.addEventListener('click', function() {
+                    deleteAllCookies();
+                });
+            }
         }
     }
 
-    // Function to fetch and display cookies
+    function deleteAllCookies() {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            var currentTab = tabs[0];
+            var tabUrl = currentTab.url;
+    
+            chrome.cookies.getAll({ url: tabUrl }, function(cookies) {
+                // Supprime chaque cookie
+                cookies.forEach(function(cookie) {
+                    deleteCookie(cookie.name, cookie.domain);
+                });
+    
+                // Rafraîchit la liste des cookies après suppression
+                fetchAndDisplayCookies();
+            });
+        });
+    }
+
     function fetchAndDisplayCookies() {
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             var currentTab = tabs[0];
             var tabUrl = currentTab.url;
-
+    
             chrome.cookies.getAll({ url: tabUrl }, function(cookies) {
                 displayCookies(cookies);
+    
+                // Affiche ou masque le bouton en fonction de la présence de cookies
+                var deleteAllCookiesButton = document.getElementById('deleteAllCookiesButton');
+                if (deleteAllCookiesButton) {
+                    if (cookies.length > 0) {
+                        deleteAllCookiesButton.style.display = 'block';
+                    } else {
+                        deleteAllCookiesButton.style.display = 'none';
+                    }
+                }
             });
         });
     }
+    
 
     // Function to display cookies
     function displayCookies(cookies) {
@@ -180,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var nameElement = document.createElement('p');
             nameElement.textContent = cookie.name;
             nameElement.style.fontWeight = 'bold';
+
 
             var domainElement = document.createElement('p');
             domainElement.textContent = cookie.domain;
