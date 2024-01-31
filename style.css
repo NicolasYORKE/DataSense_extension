@@ -7,19 +7,19 @@ body {
     margin-bottom: 10px;
   }
   
-  .tab-button {
+.tab-button {
     padding: 8px 16px;
     margin: 0 5px;
     cursor: pointer;
-  }
+}
   
-  .tab-content {
+.tab-content {
     padding: 10px;
     border: 1px solid #ccc;
-  }
+}
   
 
-  .purple-button {
+.purple-button {
     background-color: #c9286b;
     border: none;
     color: white;
@@ -29,6 +29,30 @@ body {
     margin: 80px auto;
     cursor: pointer;
 }
+
+#cookieList {
+  max-height: 400px; /* Ajustez la hauteur maximale de la liste des cookies selon vos besoins */
+  overflow-y: auto; /* Ajoutez une barre de défilement vertical si nécessaire */
+}
+
+#cookiesContainer {
+  max-height: 400px; /* Ajustez la hauteur maximale de la liste des cookies selon vos besoins */
+  overflow-y: auto; /* Ajoutez une barre de défilement vertical si nécessaire */
+  position: relative;
+}
+
+.delete-button {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  background-color: #c9286b;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 
 #cursor {
   height: 2px;
