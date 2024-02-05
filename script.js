@@ -123,29 +123,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchAndDisplayCookies() {
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            var currentTab = tabs[0];
-            var tabUrl = currentTab.url;
+        // Charger la base de données JSON
+        fetch('db_cookies.json')
+            .then(response => response.json())
+            .then(cookiesDatabase => {
+                // Récupérer les cookies actuels
+                chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                    var currentTab = tabs[0];
+                    var tabUrl = currentTab.url;
     
-            chrome.cookies.getAll({ url: tabUrl }, function(cookies) {
-                displayCookies(cookies);
-    
-                // Affiche ou masque le bouton en fonction de la présence de cookies
-                var deleteAllCookiesButton = document.getElementById('deleteAllCookiesButton');
-                if (deleteAllCookiesButton) {
-                    if (cookies.length > 0) {
-                        deleteAllCookiesButton.style.display = 'block';
-                    } else {
-                        deleteAllCookiesButton.style.display = 'none';
-                    }
-                }
+                    chrome.cookies.getAll({ url: tabUrl }, function(cookies) {
+                        // Appeler la fonction displayCookies avec les cookies actuels et la base de données
+                        displayCookies(cookies, cookiesDatabase);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement de la base de données:', error);
             });
-        });
     }
-    
+
 
     // Function to display cookies
-    function displayCookies(cookies) {
+    function displayCookies(cookies, cookiesDatabase) {
         var cookieListContainer = document.getElementById('cookieList');
         if (!cookieListContainer) {
             console.error("Cookie list container not found.");
@@ -161,8 +161,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Loop through cookies and create div for each cookie
+       // Loop through cookies and create div for each cookie
         cookies.forEach(function(cookie) {
-            // Create cookie div
+            // Get cookie description from the database
+            var description = cookiesDatabase[cookie.name];
+            if (!description) {
+                description = "No description found for " + cookie.name;
+            }
+
+            // Créez et ajoutez les éléments DOM
             var cookieDiv = document.createElement('div');
             cookieDiv.style.marginBottom = '10px';
             cookieDiv.style.backgroundColor = '#eee';
@@ -183,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteIcon.style.transition = 'transform 0.3s ease-in-out';
 
             // Add click event to delete the cookie
-            deleteIcon.addEventListener('click', function() {
+            deleteIcon.addEventListener('click', function () {
                 deleteCookie(cookie.name, cookie.domain);
                 // Remove the corresponding div from the DOM
                 cookieDiv.remove();
@@ -199,13 +206,15 @@ document.addEventListener('DOMContentLoaded', function() {
             arrowIcon.style.transition = 'transform 0.3s ease-in-out';
 
             // Add click event to toggle visibility of the value, details, and rotate arrow icon
-            arrowIcon.addEventListener('click', function() {
+            arrowIcon.addEventListener('click', function () {
                 if (valueElement.style.maxHeight === '0px') {
                     valueElement.style.maxHeight = valueElement.scrollHeight + 'px'; // Expand value
+                    descElement.style.maxHeight = descElement.scrollHeight + 'px'; // Expand description
                     detailsContainer.style.maxHeight = detailsContainer.scrollHeight + 'px'; // Expand details
                     arrowIcon.style.transform = 'rotate(180deg)'; // Rotate arrow vertically
                 } else {
                     valueElement.style.maxHeight = '0'; // Collapse value
+                    descElement.style.maxHeight = '0'; // Collapse description
                     detailsContainer.style.maxHeight = '0'; // Collapse details
                     arrowIcon.style.transform = 'rotate(0deg)'; // Reset rotation
                 }
@@ -215,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var nameElement = document.createElement('p');
             nameElement.textContent = cookie.name;
             nameElement.style.fontWeight = 'bold';
-
 
             var domainElement = document.createElement('p');
             domainElement.textContent = cookie.domain;
@@ -230,6 +238,12 @@ document.addEventListener('DOMContentLoaded', function() {
             valueElement.style.overflow = 'hidden';
             valueElement.style.transition = 'max-height 0.3s ease-in-out';
 
+            var descElement = document.createElement('p');
+            descElement.textContent = "Description: " + description;
+            descElement.style.maxHeight = '0';
+            descElement.style.overflow = 'hidden';
+            descElement.style.transition = 'max-height 0.3s ease-in-out';
+
             var detailsContainer = document.createElement('div');
             detailsContainer.style.maxHeight = '0';
             detailsContainer.style.overflow = 'hidden';
@@ -243,12 +257,14 @@ document.addEventListener('DOMContentLoaded', function() {
             cookieDiv.appendChild(nameElement);
             cookieDiv.appendChild(domainElement);
             cookieDiv.appendChild(valueElement);
+            cookieDiv.appendChild(descElement);
             cookieDiv.appendChild(detailsContainer);
             cookieDiv.appendChild(arrowIcon);
 
             // Append the cookie div to the container
             cookieListContainer.appendChild(cookieDiv);
         });
+
     }
 
 
