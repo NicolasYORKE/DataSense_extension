@@ -1,5 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    var links = document.querySelectorAll('.nav-link');
+
+    links.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut du lien
+            setActive(link);
+        });
+    });
+
+    function setActive(clickedLink) {
+        // Retirer la classe 'active' de tous les liens
+        links.forEach(function(link) {
+            link.classList.remove('active');
+        });
+
+        // Ajouter la classe 'active' à l'élément actuel
+        clickedLink.classList.add('active');
+    }
+
     // Onglet 3 - Chatbot
     var chatContainer = document.getElementById('chatContainer');
     var userInput = document.getElementById('userInput');
@@ -27,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 model: 'gpt-3.5-turbo',  // Ajoutez cette ligne avec le modèle souhaité
                 messages: [
-                    { role: 'system', content: 'You are a helpful assistant.' },
+                    { role: 'system', content: 'Tu es un assistant dans la gestion des cookies en ligne.' },
                     { role: 'user', content: userMessage }
                 ]
             })
@@ -59,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    var tabLinks = document.querySelectorAll('.nav-tab');
+    var tabLinks = document.querySelectorAll('.nav-item');
     var cursor = document.getElementById('cursor');
 
     tabLinks.forEach(function(link, index) {
@@ -224,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var nameElement = document.createElement('p');
             nameElement.textContent = cookie.name;
             nameElement.style.fontWeight = 'bold';
+            nameElement.style.fontFamily = 'Nunito, sans-serif';
 
             var domainElement = document.createElement('p');
             domainElement.textContent = cookie.domain;
@@ -233,16 +253,53 @@ document.addEventListener('DOMContentLoaded', function() {
             domainElement.style.fontSize = '10px';
 
             var valueElement = document.createElement('p');
-            valueElement.textContent = "Value: " + cookie.value;
+
+            // Créer une balise <span> pour le texte "Value" en gras
+            var valueLabel = document.createElement('span');
+            valueLabel.textContent = "Value ";
+            valueLabel.style.fontWeight = 'bold';
+
+            // Créer une balise <br> pour passer à la ligne suivante
+            var lineBreak = document.createElement('br');
+
+            // Créer le texte de la valeur du cookie
+            var cookieValueText = document.createTextNode(cookie.value);
+
+            // Ajouter le label, le saut de ligne et la valeur au paragraphe
+            valueElement.appendChild(valueLabel);
+            valueElement.appendChild(lineBreak);
+            valueElement.appendChild(cookieValueText);
+
             valueElement.style.maxHeight = '0';
             valueElement.style.overflow = 'hidden';
             valueElement.style.transition = 'max-height 0.3s ease-in-out';
+            valueElement.style.fontFamily = 'Nunito, sans-serif';
+
+
 
             var descElement = document.createElement('p');
-            descElement.textContent = "Description: " + description;
+
+            // Créer une balise <span> pour le texte "Description" en gras
+            var descLabel = document.createElement('span');
+            descLabel.textContent = "Description";
+            descLabel.style.fontWeight = 'bold';
+
+            // Créer une balise <br> pour passer à la ligne suivante
+            var lineBreak = document.createElement('br');
+
+            // Créer le texte de la description
+            var descText = document.createTextNode(description);
+
+            // Ajouter le label, le saut de ligne et la description au paragraphe
+            descElement.appendChild(descLabel);
+            descElement.appendChild(lineBreak);
+            descElement.appendChild(descText);
+
             descElement.style.maxHeight = '0';
             descElement.style.overflow = 'hidden';
             descElement.style.transition = 'max-height 0.3s ease-in-out';
+            descElement.style.fontFamily = 'Nunito, sans-serif';
+
 
             var detailsContainer = document.createElement('div');
             detailsContainer.style.maxHeight = '0';

@@ -11,7 +11,7 @@ fetch(chrome.runtime.getURL('db_cookies.json'))
 
 let notificationCreated = false;
 
-chrome.webNavigation.onCompleted.addListener(function(details) {
+chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
     // Reset notificationCreated to false
     console.log('onCompleted');
     notificationCreated = false;
@@ -27,7 +27,7 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
                     // Send a Chrome notification
                     chrome.notifications.create({
                         type: 'basic',
-                        iconUrl: 'assets/icon48.jpg',
+                        iconUrl: 'assets/Logo_DataSense2.png',
                         title: 'Cookie trouvé',
                         message: `Un cookie nommé "${cookie.name}" avec la description "${description}" a été trouvé!`
                     });

@@ -4,6 +4,7 @@
     <title>Ma Extension Chrome</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
     <style>
         .tab {
             display: none;
@@ -13,44 +14,40 @@
 <body style="background-color: lightgray;">
     
     <!-- ... Votre contenu HTML ... -->
-    <div id="cursor" class="nav-tab"></div>
-    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; width: 400px;">
-        <img src="assets/Logo_DataSense.png" alt="cookie" style="margin-right: 10px;">
-        <ul class="nav nav-pills" style="max-width: 400px;">
-            <li class="nav-item">
-                <a class="nav-link active nav-tab" href="#" data-tab="tab1">DataSense</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-tab" href="#" data-tab="tab2">Cookie Review</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-tab" href="#" data-tab="tab3">Chatbot</a>
-            </li>
-        </ul>
+    <div id="cursor" class="nav-tab" style="margin-bottom: 5px;"></div>
+    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; width: 420px;">
+        <nav class="navbar navbar-expand-sm navbar-light" style="min-width: none; background-color: #e9a9c3; border-radius: 30px; max-width: 420px; margin-bottom: 5px;">
+            <div class="container-fluid" style="flex-wrap: unset;">
+                <img src="assets/Logo_DataSense.png" alt="cookie" style="margin-right: 10px;">
+                <div class="navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav" style="flex-direction: unset;">
+                        <a class="nav-link active nav-item item-class" aria-current="page" href="#" data-tab="tab1" style="padding-left: 13px; padding-right: 13px; font-family: 'Nunito'">DataSense</a>
+                        <a class="nav-link active nav-item item-class" aria-current="page" href="#" data-tab="tab2" style="padding-left: 13px; padding-right: 13px; font-family: 'Nunito'">Cookie manager</a>
+                        <a class="nav-link active nav-item item-class" aria-current="page" href="#" data-tab="tab3" style="padding-left: 13px; padding-right: 13px;">Chatbot</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
     </div>
     
-
-
+    
     <div id="tab1" class="tab" style="height: 450px; padding: 25px; border-radius: 5%; background-color: white;">
         <img src="assets/DataSense.png" alt="cookie" style="height: 150px; display: block; margin-left: auto; margin-right: auto; width: 60%; margin-top: 70px;">
-        <a href="https://www.cnil.fr/fr/cnil-direct/question/la-cnil-cest-quoi" target="_blank"><button class="purple-button" >Our website</button></a>
+        <a href="http://localhost:3000/" target="_blank"><button class="purple-button" style="font-family: 'Nunito', sans-serif;" >Our website</button></a>
     </div>
 
     <div id="tab2" class="tab">
         <div id="cookiesContainer">
             <div id="cookieList"></div>
         </div>
-        <button id="deleteAllCookiesButton" class="delete-button" >Supprimer tous les cookies</button>
+        <button id="deleteAllCookiesButton" class="delete-button" style="font-family: 'Nunito';" >Supprimer tous les cookies</button>
     </div>
-    
-    
 
     <div id="tab3" class="tab">
-        <h1>DataSense AI</h1>
+        <h1 style="font-family: 'Nunito', sans-serif; margin-top: 10px;">DataSense AI</h1>
         <ul id="chatContainer"></ul>
-        <input type="text" id="userInput" placeholder="Type your message...">
-        <button id="sendButton">Send</button>
-
+        <input class='input-msg' type="text" id="userInput" placeholder="Type your message...">
+        <button id="sendButton" class="send-button">Send</button>
     </div>
 
 
